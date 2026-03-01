@@ -1,0 +1,176 @@
+  {% extends "partials/base_client.html" %}
+    {% block content %}
+ 
+</head>
+<body>
+
+<style>.shop-card {
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    transition: 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.shop-body {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.shop-desc {
+    font-size: 14px;
+    color: #666;
+    margin: 10px 0;
+
+    /* 🔥 THIS MAKES SAME HEIGHT */
+    min-height: 48px;
+    max-height: 48px;
+    overflow: hidden;
+}
+
+.shop-meta {
+    margin-top: auto; /* pushes stats to bottom */
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+}</style>
+
+
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">✦ Plateforme artisanale</div>
+    <h1 class="hero-title">L'artisanat <em>authentique</em> à portée de main</h1>
+    <p class="hero-desc">Découvrez des créations uniques faites à la main par des artisans passionnés. Chaque pièce raconte une histoire.</p>
+    <div class="hero-cta">
+      <a href="#section-produits" class="btn-primary-cta">Explorer les produits</a>
+      <a href="#section-boutiques" class="btn-ghost">Voir les boutiques</a>
+      
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">147</div><div class="lbl">Artisans</div></div>
+      <div class="hero-stat"><div class="num">3 800+</div><div class="lbl">Produits</div></div>
+      <div class="hero-stat"><div class="num">★ 4.8</div><div class="lbl">Note moyenne</div></div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ── CATEGORIES ── -->
+<div class="cats-band">
+
+  <!-- All Categories -->
+  <a style="text-decoration: none" href="{% url 'client:search' %} " 
+     class="cat-pill active">
+     Tout
+  </a>
+
+  {% for categorie in categories %}
+  <a style="text-decoration: none" href="{% url 'client:search' %}?category={{ categorie.id }}" 
+     class="cat-pill">
+     {{ categorie.name|capfirst }}
+  </a>
+  {% endfor %}
+
+</div>
+<!-- ── FEATURED PRODUCTS ── -->
+<section class="section" id="section-produits">
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">Produits <span>en vedette</span></h2>
+      <p class="section-sub">Sélection artisanale de la semaine</p>
+    </div>
+    <a href="#" class="link-see-all">Voir tout →</a>
+  </div>
+  <div class="row g-3">
+
+    {% for product in products  %}
+<div class="col-6 col-md-4 col-lg-3">
+  <a href="{% url 'client:product_detail' product.id %}" style="text-decoration: none; color: inherit;">
+    <div class="prod-card">
+{% if product.product_image %}
+    <img src="{{ product.product_image.url }}" 
+         alt="{{ product.name }}" 
+         class="img-fluid rounded" 
+         style="height: 250px; width: 100%; object-fit: cover;">
+{% endif %}
+      <div class="prod-body">
+        <div class="prod-shop">
+          <i class="bi bi-shop"></i> Atelier {{ product.artisan.shop_name }}
+        </div>
+        <div class="prod-name">{{ product.name }}</div>
+        <div class="d-flex align-items-center gap-2 mt-1">
+          <div class="prod-stars">★★★★★</div>
+          <span class="prod-reviews">(214)</span>
+        </div>
+        <div class="prod-footer">
+          <div>
+            <span class="prod-price">{{ product.price }} Mad</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </a>
+</div>
+{% endfor %}
+  </div>
+</section>
+
+<!-- ── PROMO BANNER ── -->
+<div style="padding:0 48px;max-width:1296px;margin:0 auto 48px">
+  <div class="promo-banner">
+    <div>
+      <div class="promo-tag">✦ Offre spéciale</div>
+      <div class="promo-title">Livraison <em>gratuite</em><br>dès 60 MAD d'achat</div>
+      <div class="promo-desc">Profitez de la livraison offerte sur toute commande supérieure à 60 € — valable sur toute la plateforme.</div>
+    </div>
+    <a href="#section-produits" class="btn-primary-cta" style="flex-shrink:0">Découvrir les produits</a>
+  </div>
+</div>
+
+<!-- ── BOUTIQUES ── -->
+<section class="section" id="section-boutiques">
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">Nos <span>boutiques</span></h2>
+      <p class="section-sub">Des artisans vérifiés, des créations authentiques</p>
+    </div>
+    <a href="#" class="link-see-all">Voir tout →</a>
+  </div>
+  <div class="row g-3">
+
+    {% for artisan in artisans %}
+
+    <div class="col-md-6 col-lg-3 d-flex">
+      <div class="shop-card">
+{% if artisan.shop_image %}
+    <img src="{{ artisan.shop_image.url }}" 
+         alt="{{ artisan.name }}" 
+         class="img-fluid rounded" 
+         style="height: 250px; width: 100%; object-fit: cover;">
+{% endif %}
+        <div class="shop-body">
+          <div class="shop-avatar-wrap"><div class="shop-avatar">🏬</div><span class="shop-verified"><i class="bi bi-check2-circle me-1"></i>Vérifié</span></div>
+          <div class="shop-name">{{artisan.shop_name}}</div>
+          <div class="shop-desc">{{artisan.shop_description|truncatechars:120}}</div>
+          <div class="shop-meta">
+            <div class="shop-meta-item"><strong>{{artisan.product_count}}</strong>Produits</div>
+            <div class="shop-meta-item"><strong style="color:#F5A623">★ 4.7</strong>Note</div>
+            <div class="shop-meta-item"><strong>214</strong>Ventes</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+  </div>
+</section>
+
+
+  {% endblock %} 

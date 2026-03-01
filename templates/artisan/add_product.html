@@ -1,0 +1,121 @@
+{% extends "partials/base.html" %}
+
+{% block content %} 
+
+<div class="main-content">
+  <div class="topbar">
+    <div class="d-flex align-items-center gap-3">
+      <button class="btn btn-sm sidebar-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">
+        <i class="bi bi-list fs-5"></i>
+      </button>
+      <span class="topbar-title">Plateforme <span>Artisanale</span></span>
+    </div>
+     <div class="topbar-right">    
+
+    </div>
+  </div>
+  <div class="page-content">
+    <div class="page-header d-flex align-items-start justify-content-between">
+      <div><h2>Produits</h2><p>Gérez l'ensemble du catalogue de produits artisanaux.</p></div>
+      <button class="btn-primary-custom" data-bs-toggle="modal" data-bs-target="#productModal">
+        <i class="bi bi-plus-lg me-1"></i> Ajouter un produit
+      </button>
+    </div>
+  
+    <div class="row g-3">
+
+      {% for product in products %}
+      <div class="col-6 col-md-4 col-xl-3">
+        <div class="product-card">
+        <img src="{{ product.product_image.url }}" 
+     alt="{{ product.name }}" 
+     class="img-fluid rounded" 
+     style="height: 290px; width: 100%; object-fit: cover;">
+          <div class="product-body">
+            <div class="product-name">{{product.name}}</div>
+            <div class="product-price">{{product.price}} Mad</div>
+            <div class="product-seller"><i class="bi bi-shop me-1"></i>{{product.artisan}}</div>
+            <div class="d-flex gap-2 mt-3">
+              <a href="{% url 'artisan:edit_product' product.id %}"
+   class="btn-outline-custom flex-fill"
+   style="padding:5px 8px;font-size:.78rem">
+   Éditer
+</a>
+             <a href="{% url 'artisan:delete_product' product.id %}"
+   class="btn btn-sm btn-outline-danger flex-fill"
+   style="font-size:.78rem"
+   onclick="return confirm('Supprimer ce produit ?');">
+   Suppr.
+</a>
+            </div>
+          </div>
+        </div>
+      </div>
+{% endfor %}
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="productModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content" style="border-radius:16px;border:1px solid var(--border)">
+
+      <form method="POST" enctype="multipart/form-data" action="{% url 'artisan:add_product' %}">
+        {% csrf_token %}
+
+        <div class="modal-header" style="border-bottom:1px solid var(--border)">
+          <h5 class="modal-title">Nouveau produit</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body p-4">
+          <div class="row g-3">
+
+            <div class="col-md-6">
+              <label class="form-label">Nom du produit</label>
+              {{ form.name }}
+            </div>
+
+            <div class="col-12">
+              <label class="form-label">Description</label>
+              {{ form.description }}
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Prix (MAD)</label>
+              {{ form.price }}
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Stock</label>
+              {{ form.stock }}
+            </div>
+               <div class="col-md-4">
+              <label class="form-label">Category</label>
+              {{ form.category }}
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">Image (URL)</label>
+              {{ form.product_image }}
+            </div>
+
+          </div>
+        </div>
+
+        <div class="modal-footer" style="border-top:1px solid var(--border)">
+          <button class="btn-outline-custom" type="button" data-bs-dismiss="modal">
+            Annuler
+          </button>
+
+          <button class="btn-primary-custom" type="submit">
+            Enregistrer le produit
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+ {% endblock content %}

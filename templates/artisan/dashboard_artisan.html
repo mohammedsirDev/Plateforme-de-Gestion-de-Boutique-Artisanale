@@ -1,0 +1,78 @@
+{% extends "partials/base.html" %}
+{% load static %}
+{% block content %} 
+
+<div class="main-content">
+  <div class="topbar">
+    <div class="d-flex align-items-center gap-3">
+      <button class="btn btn-sm sidebar-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">
+        <i class="bi bi-list fs-5"></i>
+      </button>
+      <span class="topbar-title">Plateforme <span>Artisanale</span></span>
+    </div>
+    <div class="topbar-right">
+
+           {% if artisan.shop_image %}
+    <img  class="user-avatar" style="width:34px;height:34px;font-size:.8rem" src="{{ artisan.shop_image.url }}" alt="Shop Image">
+{% else %}
+    <img class="user-avatar" style="width:34px;height:34px;font-size:.8rem" src="{% static 'images/default-shop.png' %}" alt="Default Image">
+{% endif %}    
+
+  
+    </div>
+  </div>
+  <div class="page-content">
+    <div class="page-header">
+   <div class="page-header">
+  <h2>Tableau de bord — {{ artisan.shop_name}}</h2>
+  <p>
+    Bienvenue dans la boutique 
+    <strong>{{ artisan.shop_name }}</strong> —
+    voici un aperçu de votre activité.
+  </p>
+</div>
+    </div>
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-lg-3">
+        <div class="stat-card card-terracotta">
+          <div class="icon-box ic-terracotta"><i class="bi bi-bag-check"></i></div>
+          <div class="value">{{total_orders}}</div>
+          <div class="label">Commandes totales</div>
+          <div class="trend trend-up"><i class="bi bi-arrow-up-right"></i> +12% ce mois</div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="stat-card card-moss">
+          <div class="icon-box ic-moss"><i class="bi bi-currency-euro"></i></div>
+          <div class="value">{{revenue}} MAD</div>
+          <div class="label">Chiffre d'affaires</div>
+          <div class="trend trend-up"><i class="bi bi-arrow-up-right"></i> +8% ce mois</div>
+        </div>
+      </div>
+<div class="col-6 col-lg-3">
+  <div class="stat-card card-moss">
+    <div class="icon-box ic-moss">
+      <i class="bi bi-box-seam"></i>
+    </div>
+    <div class="value">{{ total_products }}</div>
+    <div class="label">Total de produits</div>
+    <div class="trend trend-up">
+      <i class="bi bi-arrow-up-right"></i> +8% ce mois
+    </div>
+  </div>
+</div>
+ 
+      <div class="col-6 col-lg-3">
+        <div class="stat-card card-amber">
+          <div class="icon-box ic-amber"><i class="bi bi-box-seam"></i></div>
+          <div class="value">{{total_stock}}</div>
+          <div class="label">Produits en stock</div>
+          <div class="trend trend-down"><i class="bi bi-arrow-down-right"></i> -2% ce mois</div>
+        </div>
+      </div>
+    </div>
+    
+  
+  </div>
+</div>
+ {% endblock content %}

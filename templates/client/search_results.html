@@ -1,0 +1,66 @@
+
+
+
+  {% extends "partials/base_client.html" %}
+    {% block content %}
+<!-- ── HERO ── -->
+
+
+<!-- ── FEATURED PRODUCTS ── -->
+<section class="section" id="section-produits">
+  <div class="section-header">
+    <div>
+      <h2 class="section-title">Produits <span>en vedette</span></h2>
+      <p class="section-sub">Sélection artisanale de la semaine</p>
+   
+      <h2>{{ product.artisan.shop_name }}<h2>
+    </div>
+    <a href="/" class="link-see-all">Voir tout →</a>
+  </div>
+  <div class="row g-3">
+
+    {% for product in products  %}
+<div class="col-6 col-md-4 col-lg-3">
+  <a href="{% url 'client:product_detail' product.id %}" style="text-decoration: none; color: inherit;">
+    <div class="prod-card">
+      <img src="{{product.product_image.url}}"  style="height: 250px; width: 100%; object-fit: cover;"/>
+      <div class="prod-body">
+        <div class="prod-shop">
+          <i class="bi bi-shop"></i> Atelier {{ product.artisan.shop_name }}
+        </div>
+        <div class="prod-name">{{ product.name }}</div>
+        <div class="d-flex align-items-center gap-2 mt-1">
+          <div class="prod-stars">★★★★★</div>
+          <span class="prod-reviews">(214)</span>
+        </div>
+        <div class="prod-footer">
+          <div>
+            <span class="prod-price">{{ product.price }} Mad</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </a>
+</div>
+{% endfor %}
+  </div>
+</section>
+
+<!-- ── PROMO BANNER ── -->
+<div style="padding:0 48px;max-width:1296px;margin:0 auto 48px">
+  <div class="promo-banner">
+    <div>
+      <div class="promo-tag">✦ Offre spéciale</div>
+      <div class="promo-title">Livraison <em>gratuite</em><br>dès 60 MAD d'achat</div>
+      <div class="promo-desc">Profitez de la livraison offerte sur toute commande supérieure à 60 € — valable sur toute la plateforme.</div>
+    </div>
+    <a href="#section-produits" class="btn-primary-cta" style="flex-shrink:0">Découvrir les produits</a>
+  </div>
+</div>
+
+
+
+
+</section>
+
+  {% endblock %} 
